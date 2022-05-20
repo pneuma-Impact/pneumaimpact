@@ -7,8 +7,14 @@ const cors = require("cors");
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
+const passport = require("passport");
+const authStrategy = require("./core/auth");
+
+passport.use(authStrategy);
 
 const appVersion = "v1";
+
+require("./core/db");
 
 const { authRoutes } = require("./routes");
 

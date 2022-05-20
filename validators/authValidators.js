@@ -1,0 +1,58 @@
+const { validationResult, body } = require("express-validator");
+const { User } = require("../models");
+
+exports.login = async (req, res, next) => {
+  await body("email")
+    .notEmpty()
+    .bail()
+    .withMessage("Required Field")
+    .isEmail()
+    .withMessage("Must be a valid email address")
+    .run(req);
+  await body("password")
+    .notEmpty()
+    .bail()
+    .withMessage("Required field")
+    .run(req);
+
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    return res
+      .status(422)
+      .json({ message: "Invalid data", errors: errors.array() });
+  }
+  next();
+};
+
+exports.register = async (req, res, next) => {
+  await body("email")
+    .notEmpty()
+    .bail()
+    .withMessage("Required Field")
+    .isEmail()
+    .withMessage("Must be a valid email address")
+    .custom(async (value) => {
+      const user = await User.findOne({ email: value });
+      if (user) {
+        return Promise.reject("User with that email address already exists");
+      }
+    })
+    .run(req);
+  await body("password")
+    .notEmpty()
+    .bail()
+    .withMessage("Required field")
+    .isLength({ min: 6 })
+    .withMessage("Must have minimum of 6 characters")
+    .run(req);
+
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    return res
+      .status(422)
+      .json({ message: "Invalid data", errors: errors.array() });
+  }
+  next();
+};
+
+exports.changePassword = (req, res, next) => {};
