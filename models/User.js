@@ -1,4 +1,4 @@
-const { Schema, model } = require("mongoose");
+const { Schema, model } = require("../core/db");
 const saltRounds = 10;
 const bcrypt = require("bcrypt");
 

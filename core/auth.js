@@ -25,7 +25,7 @@ const authStrategy = new JwtStrategy(opts, function (jwt_payload, done) {
 
       return done(null, u);
     } else {
-      return done(null, false);
+      return done(null, false, "You are not allowed");
       // or you could create a new account
     }
   });
