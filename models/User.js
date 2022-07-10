@@ -41,6 +41,10 @@ userSchema.post("save", function (error, doc, next) {
   }
 });
 
+userSchema.virtual("isVerified").get(function () {
+  return !this.verification_token;
+});
+
 const User = model("User", userSchema);
 
 module.exports = User;

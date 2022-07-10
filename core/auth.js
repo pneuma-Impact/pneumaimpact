@@ -22,6 +22,7 @@ const authStrategy = new JwtStrategy(opts, function (jwt_payload, done) {
       delete u.verification_token;
       delete u.createdAt;
       delete u.updatedAt;
+      u.isVerified = user.isVerified;
 
       return done(null, u);
     } else {

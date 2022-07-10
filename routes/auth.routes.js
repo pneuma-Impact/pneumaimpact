@@ -15,4 +15,12 @@ router.get(
   authController.user
 );
 
+router.post(
+  "/resend-verification-email",
+  passport.authenticate("jwt", {
+    session: false,
+  }),
+  authController.resendVerificationMail
+);
+
 module.exports = router;

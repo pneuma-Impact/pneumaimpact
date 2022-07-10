@@ -2,6 +2,8 @@ const { User } = require("../models");
 const saltRounds = 10;
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
+const { generateRandomNumber } = require("../commons/utils");
+const { sendVerificationMail } = require("../services/mail");
 const secretOrKey = process.env.SECRET_OR_KEY;
 
 //TODO move this somewhere else to be shared betwen login and authenticate strategy
@@ -41,7 +43,8 @@ exports.login = async (req, res) => {
 exports.register = async (req, res) => {
   const user = User({
     email: req.body.email,
-    role: "editor",
+    role: "user",
+    verification_token: generateRandomNumber(10000, 99999),
     password: req.body.password,
   });
 
@@ -51,10 +54,38 @@ exports.register = async (req, res) => {
         .status(500)
         .json({ message: "Server error", err: err.message });
     }
-    return res.status(201).json({ message: "user created" });
+    return res.status(201).json({
+      message: "User created",
+      user: {
+        email: user.email,
+        isVerified: user.isVerified,
+        name: user.name,
+      },
+    });
   });
 };
 
-exports.user = (req, res) => {
-  return res.json({ user: req.user });
+exports.user = ({ user }, res) => {
+  return res.json({ user });
 };
+
+exports.resendVerificationMail = (req, res) => {
+  if (req.user.isVerified) res.status(204).end();
+  User.where({ email: req.user.email }).findOne(function (err, user) {
+    if (err) {
+      res
+        .status(500)
+        .json({ message: "There was an error sending mail" })
+        .end();
+    }
+    if (!user) {
+      res.status(400).json({ message: "Invalid user" }).end();
+    }
+    //Now send verification email
+
+    sendVerificationMail(user);
+    res.json("ok");
+  });
+};
+
+exports.verifyUserAccount = (req, res) => {};
