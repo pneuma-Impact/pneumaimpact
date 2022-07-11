@@ -46,6 +46,13 @@ userSchema.virtual("isVerified").get(function () {
   return !this.verification_token;
 });
 
+userSchema.virtual("cleanData").get(function () {
+  return {
+    email: this.email,
+    isVerified: this.isVerified,
+  };
+});
+
 const User = model("User", userSchema);
 
 module.exports = User;

@@ -66,8 +66,8 @@ exports.register = async (req, res) => {
   });
 };
 
-exports.user = ({ user }, res) => {
-  return res.json({ user });
+exports.user = (req, res) => {
+  return res.json({ user: req.user.cleanData });
 };
 
 exports.resendVerificationMail = (req, res) => {

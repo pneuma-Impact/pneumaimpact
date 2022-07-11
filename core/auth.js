@@ -13,18 +13,7 @@ const authStrategy = new JwtStrategy(opts, function (jwt_payload, done) {
       return done(err, false, "Invalid user");
     }
     if (user) {
-      const u = user.toJSON();
-      delete u.password;
-      delete u.__v;
-      delete u.refresh_token;
-      delete u.tmp_password;
-      delete u.reset_token;
-      delete u.verification_token;
-      delete u.createdAt;
-      delete u.updatedAt;
-      u.isVerified = user.isVerified;
-
-      return done(null, u);
+      return done(null, user);
     } else {
       return done(null, false, "You are not allowed");
       // or you could create a new account
