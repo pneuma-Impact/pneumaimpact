@@ -4,6 +4,7 @@ const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const { generateRandomNumber } = require("../commons/utils");
 const { sendVerificationMail } = require("../services/mail");
+const { findByEmail } = require("../repositories/user");
 const secretOrKey = process.env.SECRET_OR_KEY;
 
 //TODO move this somewhere else to be shared betwen login and authenticate strategy
@@ -71,7 +72,7 @@ exports.user = ({ user }, res) => {
 
 exports.resendVerificationMail = (req, res) => {
   if (req.user.isVerified) res.status(204).end();
-  User.where({ email: req.user.email }).findOne(function (err, user) {
+  User.where({ email: req.user.email }).findOne(async function (err, user) {
     if (err) {
       res
         .status(500)
@@ -81,11 +82,28 @@ exports.resendVerificationMail = (req, res) => {
     if (!user) {
       res.status(400).json({ message: "Invalid user" }).end();
     }
+    //reset token
+
+    user.verification_token = generateRandomNumber(10000, 99999);
+
+    await user.save();
+
     //Now send verification email
 
     sendVerificationMail(user);
-    res.json("ok");
+    res.status(204).end();
   });
 };
 
-exports.verifyUserAccount = (req, res) => {};
+exports.verifyUserAccount = async (req, res) => {
+  try {
+    const user = await findByEmail(req.user.email);
+    user.verification_token = null;
+    user.email_verified_at = new Date();
+    await user.save();
+    res.status(200).json({ status: "Success" }).end();
+  } catch (error) {
+    console.log(error);
+    res.status(500).end();
+  }
+};

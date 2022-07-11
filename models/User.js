@@ -17,6 +17,7 @@ const userSchema = new Schema(
     refresh_token: String,
     reset_token: String,
     verification_token: Number,
+    email_verified_at: Date,
   },
   { timestamps: true }
 );

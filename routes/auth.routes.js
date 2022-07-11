@@ -23,4 +23,13 @@ router.post(
   authController.resendVerificationMail
 );
 
+router.post(
+  "/verify-user-account",
+  passport.authenticate("jwt", {
+    session: false,
+  }),
+  authValidators.verifyUser,
+  authController.verifyUserAccount
+);
+
 module.exports = router;

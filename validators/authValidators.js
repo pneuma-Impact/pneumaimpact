@@ -55,4 +55,29 @@ exports.register = async (req, res, next) => {
   next();
 };
 
+exports.verifyUser = async (req, res, next) => {
+  await body("token")
+    .notEmpty()
+    .bail()
+    .withMessage("Required field.")
+    .toInt()
+    .custom(async (value) => {
+      const user = await User.findOne({ email: req.user.email });
+      if (!user) {
+        return Promise.reject("User does not exit");
+      }
+      if (user.verification_token !== value) {
+        return Promise.reject("Invalid verification token");
+      }
+    })
+    .run(req);
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    return res
+      .status(422)
+      .json({ message: "Invalid data", errors: errors.array() });
+  }
+  next();
+};
+
 exports.changePassword = (req, res, next) => {};
