@@ -6,12 +6,19 @@ const profileSchema = new Schema(
     firstName: String,
     middleName: String,
     lastName: String,
-    profile_pic: String,
+    profilePic: String,
     companyName: String,
     completed: Boolean,
   },
   { timestamps: true }
 );
+
+profileSchema.virtual("cleanData").get(function () {
+  const profile = this.toJSON();
+  delete profile.userId;
+  delete profile._id;
+  return profile;
+});
 
 const Profile = model("Profile", profileSchema);
 

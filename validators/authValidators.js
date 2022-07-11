@@ -31,12 +31,14 @@ exports.register = async (req, res, next) => {
     .withMessage("Required Field")
     .isEmail()
     .withMessage("Must be a valid email address")
+
     .custom(async (value) => {
       const user = await User.findOne({ email: value });
       if (user) {
         return Promise.reject("User with that email address already exists");
       }
     })
+    .bail()
     .run(req);
   await body("password")
     .notEmpty()
@@ -44,6 +46,15 @@ exports.register = async (req, res, next) => {
     .withMessage("Required field")
     .isLength({ min: 6 })
     .withMessage("Must have minimum of 6 characters")
+    .isStrongPassword({
+      minLength: 6,
+      minNumbers: 1,
+      minUppercase: 1,
+      minLowercase: 1,
+    })
+    .withMessage(
+      "Must be strong password with a mixture of lower case, uppercase and numbers"
+    )
     .run(req);
 
   const errors = validationResult(req);

@@ -1,5 +1,4 @@
 const { User } = require("../models");
-const saltRounds = 10;
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const { generateRandomNumber } = require("../commons/utils");
@@ -14,7 +13,7 @@ opts.audience = "pneumaimpact.ng";
 opts.expiresIn = "1h";
 
 exports.login = async (req, res) => {
-  const user = await User.findOne({ email: req.body.email });
+  const user = await findByEmail(req.body.email);
   if (!user) {
     return res
       .status(400)
@@ -26,17 +25,13 @@ exports.login = async (req, res) => {
       .status(400)
       .json({ status: "failed", message: "Incorrect credentials" });
   }
-  const u = user.toJSON();
-  delete u.password;
-  delete u.createdAt;
-  delete u.updatedAt;
-  delete u.__v;
+  const u = user.cleanData;
 
   const token = jwt.sign({ sub: u }, secretOrKey, opts);
   //Generate token
   return res.json({
     status: "Success",
-    user: { email: user.email },
+    user: user.cleanData,
     token,
   });
 };
