@@ -8,11 +8,12 @@ opts.audience = "pneumaimpact.ng";
 const { User } = require("../models");
 
 const authStrategy = new JwtStrategy(opts, function (jwt_payload, done) {
-  User.findOne({ id: jwt_payload.sub }, function (err, user) {
+  User.findById(jwt_payload.sub, function (err, user) {
     if (err) {
       return done(err, false, "Invalid user");
     }
     if (user) {
+      console.log(user);
       return done(null, user);
     } else {
       return done(null, false, "You are not allowed");

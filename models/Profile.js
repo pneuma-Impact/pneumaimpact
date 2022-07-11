@@ -2,7 +2,10 @@ const { Schema, model, ObjectId } = require("../core/db");
 
 const profileSchema = new Schema(
   {
-    userId: ObjectId,
+    userId: {
+      type: Schema.Types.ObjectId,
+      ref: "User",
+    },
     firstName: String,
     middleName: String,
     lastName: String,

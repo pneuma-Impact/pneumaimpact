@@ -1,6 +1,7 @@
 const { Schema, model } = require("../core/db");
 const saltRounds = 10;
 const bcrypt = require("bcrypt");
+const Profile = require("./Profile");
 
 const userSchema = new Schema(
   {
@@ -50,7 +51,15 @@ userSchema.virtual("cleanData").get(function () {
   return {
     email: this.email,
     isVerified: this.isVerified,
+    profile: this.profile.length > 0 && this.profile[0].cleanData,
   };
+});
+
+userSchema.virtual("profile", {
+  ref: "Profile",
+  localField: "_id",
+  foreignField: "userId",
+  limit: 1,
 });
 
 const User = model("User", userSchema);

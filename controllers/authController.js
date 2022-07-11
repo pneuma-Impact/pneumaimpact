@@ -25,7 +25,7 @@ exports.login = async (req, res) => {
       .status(400)
       .json({ status: "failed", message: "Incorrect credentials" });
   }
-  const u = user.cleanData;
+  const u = user._id;
 
   const token = jwt.sign({ sub: u }, secretOrKey, opts);
   //Generate token
