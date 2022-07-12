@@ -10,7 +10,7 @@ const secretOrKey = process.env.SECRET_OR_KEY;
 var opts = {};
 opts.issuer = "api.pneumaimpact.ng";
 opts.audience = "pneumaimpact.ng";
-opts.expiresIn = "1h";
+opts.expiresIn = "1d";
 
 exports.login = async (req, res) => {
   const user = await findByEmail(req.body.email);
@@ -19,7 +19,7 @@ exports.login = async (req, res) => {
       .status(400)
       .json({ status: "failed", message: "Incorrect credentials" });
   }
-  isValid = await bcrypt.compare(req.body.password, user.password);
+  isValid = bcrypt.compare(req.body.password, user.password);
   if (!isValid) {
     return res
       .status(400)
@@ -98,7 +98,6 @@ exports.verifyUserAccount = async (req, res) => {
     await user.save();
     res.status(200).json({ status: "Success" }).end();
   } catch (error) {
-    console.log(error);
     res.status(500).end();
   }
 };
