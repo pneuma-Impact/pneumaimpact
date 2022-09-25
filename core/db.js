@@ -1,6 +1,7 @@
 const mongoose = require("mongoose");
 const DB_URL = process.env.DB_URL;
 const slug = require("mongoose-slug-generator");
+
 mongoose.connect(DB_URL);
 
 mongoose.connection.on("connected", () => {

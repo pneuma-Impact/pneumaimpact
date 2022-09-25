@@ -51,7 +51,7 @@ userSchema.virtual("cleanData").get(function () {
   return {
     email: this.email,
     isVerified: this.isVerified,
-    profile: this?.profile?.length > 0 ? this.profile[0].cleanData : null,
+    profile: this?.profile?.length > 0 ? this?.profile[0]?.cleanData : null,
   };
 });
 

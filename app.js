@@ -1,4 +1,9 @@
-require("dotenv").config();
+if (process.env.NODE_ENV === "testing") {
+  require("dotenv").config({ path: "./.env.testing" });
+} else {
+  require("dotenv").config();
+}
+
 const express = require("express");
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -24,3 +29,5 @@ appRoutes(app, appVersion);
 app.listen(PORT, () => {
   console.log(`Server is listening on port: ${PORT}`);
 });
+
+module.exports = { app };
