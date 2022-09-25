@@ -1,5 +1,4 @@
 const expect = require("chai").expect;
-const dotenv = require("dotenv");
 const chai = require("chai");
 const request = require("supertest");
 const { app } = require("../../app");
