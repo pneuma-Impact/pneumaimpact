@@ -1,16 +1,9 @@
 const { User } = require("../models");
 const bcrypt = require("bcrypt");
-const jwt = require("jsonwebtoken");
 const { generateRandomNumber } = require("../commons/utils");
 const { sendVerificationMail } = require("../services/mail");
 const { findByEmail, createUser } = require("../repositories/user");
-const secretOrKey = process.env.SECRET_OR_KEY;
-
-//TODO move this somewhere else to be shared betwen login and authenticate strategy
-var opts = {};
-opts.issuer = "api.pneumaimpact.ng";
-opts.audience = "pneumaimpact.ng";
-opts.expiresIn = "1d";
+const { generateToken } = require("../services/auth.s");
 
 exports.login = async (req, res) => {
   try {
@@ -30,13 +23,18 @@ exports.login = async (req, res) => {
     }
     const u = user._id;
 
-    const token = jwt.sign({ sub: u }, secretOrKey, opts);
-    //Generate token
-    return res.json({
-      status: "Success",
-      user: user?.cleanData,
-      token,
-    });
+    try {
+      const token = generateToken(u);
+      //Generate token
+      return res.json({
+        status: "Success",
+        user: user?.cleanData,
+        token,
+      });
+    } catch (error) {
+      console.log(error);
+      return res.status(500).json({ message: error });
+    }
   } catch (error) {
     return res.status(500).json({ error });
   }

@@ -15,7 +15,7 @@ describe("POST Login", () => {
     await tearDownUsers();
   });
 
-  it("It should return failed password", function (done) {
+  it("It should return failed password on wrong credentials", function (done) {
     request(app)
       .post("/v1/api/auth/login")
       .send({ email: "preciousaang@gmail.com", password: "albertsten" })
