@@ -3,43 +3,42 @@ const passport = require("passport");
 
 const router = express.Router();
 
-const postsController = require("../controllers/postsController");
+const coursesController = require("../controllers/coursesController");
 const { userIsVerified, userIsAdmin } = require("../middleware/authMiddleware");
-const postsValidator = require("../validators/postsValidator");
+const coursesValidator = require("../validators/coursesValidator");
 
 router.post(
   "/",
   passport.authenticate("jwt", { session: false }),
-  postsValidator.store,
-  postsController.store
+  coursesValidator.store,
+  coursesController.store
 );
 
 router.get(
   "/slug/:slug",
   passport.authenticate("jwt", { session: false }),
   userIsVerified,
-
-  postsController.singleBySlug
+  coursesController.singleBySlug
 );
 
 router.get(
   "/id/:id",
   passport.authenticate("jwt", { session: false }),
   userIsAdmin,
-  postsController.single
+  coursesController.single
 );
 
 router.put(
   "/id/:id",
   passport.authenticate("jwt", { session: false }),
-  postsValidator.store,
-  postsController.update
+  coursesValidator.store,
+  coursesController.update
 );
 
 router.delete(
   "/id/:id",
   passport.authenticate("jwt", { session: false }),
-  postsController.delete
+  coursesController.delete
 );
 
 module.exports = router;

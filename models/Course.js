@@ -1,6 +1,6 @@
 const { Schema, model } = require("../core/db");
 
-const postSchema = new Schema(
+const courseSchema = new Schema(
   {
     title: {
       type: String,
@@ -22,6 +22,6 @@ const postSchema = new Schema(
   { timestamps: true }
 );
 
-const Post = model("Post", postSchema);
+const Course = model("Course", courseSchema);
 
-module.exports = Post;
+module.exports = Course;
