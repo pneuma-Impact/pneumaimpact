@@ -1,3 +1,4 @@
+const { dataOffset } = require("../commons/utils");
 const { Audit } = require("../models");
 
 exports.saveAudit = async (data) => {
@@ -45,9 +46,13 @@ exports.getAuditById = async (id) => {
   }
 };
 
-exports.getAllAudits = async () => {
+exports.getAllAudits = async (page = 1, perPage = 20) => {
   try {
-    const audits = await Audit.find({}).exec();
+    const audits = await Audit.find({})
+      .skip(dataOffset(page, perPage))
+      .limit(perPage)
+      .sort({ createdAt: "desc" })
+      .exec();
     return audits;
   } catch (error) {
     return Promise.reject(error);

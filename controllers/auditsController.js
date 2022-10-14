@@ -33,7 +33,9 @@ exports.getMyAudit = async (req, res) => {
 
 exports.index = async (req, res) => {
   try {
-    const audits = await getAllAudits();
+    const page = req.query.page;
+    const perPage = req.query.perPage;
+    const audits = await getAllAudits(page, perPage);
     return res.json({ audits });
   } catch (error) {
     return res.status(500).json({ message: "Server error" });
