@@ -1,5 +1,5 @@
 const { User } = require("../../models");
-const { createUser } = require("../../repositories/user");
+const { createUser } = require("../../repositories/user.repo");
 
 const creds = {
   email: "preciousaang@gmail.com",

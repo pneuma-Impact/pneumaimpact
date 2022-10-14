@@ -11,7 +11,10 @@ const profileSchema = new Schema(
     lastName: String,
     profilePic: String,
     companyName: String,
-    completed: Boolean,
+    completed: {
+      type: Boolean,
+      default: false,
+    },
   },
   { timestamps: true }
 );

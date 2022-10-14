@@ -2,7 +2,7 @@ const { User } = require("../models");
 const bcrypt = require("bcrypt");
 const { generateRandomNumber } = require("../commons/utils");
 const { sendVerificationMail } = require("../services/mail");
-const { findByEmail, createUser } = require("../repositories/user");
+const { findByEmail, createUser } = require("../repositories/user.repo");
 const { generateToken } = require("../services/auth.s");
 
 exports.login = async (req, res) => {
