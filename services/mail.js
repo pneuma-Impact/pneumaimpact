@@ -16,9 +16,9 @@ exports.sendVerificationMail = async (user) => {
 
   mg.messages().send(data, function (error, body) {
     if (error) {
-      console.log(body);
+      console.log(body, "error");
     } else {
-      console.log(body);
+      console.log(body), "non-error line";
     }
   });
 };
