@@ -43,6 +43,7 @@ exports.login = async (req, res) => {
 exports.register = async (req, res) => {
   try {
     const user = await createUser(req.body);
+    sendVerificationMail(user);
     return res.status(201).json({
       message: "User created",
       user: {
