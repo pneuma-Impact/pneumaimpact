@@ -1,14 +1,14 @@
 const mailgun = require("mailgun-js");
 
 const mg = mailgun({
-  apiKey: "key-1371e9a62a61cd609309d0a69edd9431",
-  domain: "api.pneumaimpact.ng",
+  apiKey: process.env.MAILGUN_API_KEY,
+  domain: process.env.DOMAIN,
 });
 
 exports.sendVerificationMail = async (user) => {
   console.log(user.email);
   const data = {
-    from: `Pneumaimpact <no-reply@api.pneumaimpact.ng>`,
+    from: `Pneumaimpact <no-reply@${process.env.DOMAIN}>`,
     subject: "Verify your email",
     to: `${user.email}`,
     text: `Verify you account using the following code.<br/> <b>${user.verification_token}</b>`,
