@@ -16,6 +16,6 @@ module.exports = (app, appVersion) => {
   );
 
   app.use((req, res) => {
-    return res.status(404).json({ message: "Invalid enpoint" });
+    return res.status(404).json({ message: "Invalid endpoint" });
   });
 };
