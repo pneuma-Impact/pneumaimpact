@@ -2,6 +2,7 @@ const mailgun = require("mailgun-js");
 
 const mg = mailgun({
   apiKey: process.env.MAILGUN_API_KEY,
+  domain: process.env.DOMAIN,
 });
 
 exports.sendVerificationMail = async (user) => {
@@ -15,7 +16,13 @@ exports.sendVerificationMail = async (user) => {
 
   mg.messages().send(data, function (error, body) {
     if (error) {
-      console.log(error + " " + new Date().toLocaleString());
+      console.log(
+        error +
+          " " +
+          new Date().toLocaleString() +
+          " Domain: " +
+          process.env.DOMAIN
+      );
     } else {
       console.log(body), "non-error line";
     }
