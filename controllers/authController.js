@@ -62,16 +62,16 @@ exports.user = (req, res) => {
 };
 
 exports.resendVerificationMail = (req, res) => {
-  if (req.user.isVerified) res.status(204).end();
+  if (req.user.isVerified) return res.status(204).end();
   User.where({ email: req.user.email }).findOne(async function (err, user) {
     if (err) {
-      res
+      return res
         .status(500)
         .json({ message: "There was an error sending mail" })
         .end();
     }
     if (!user) {
-      res.status(400).json({ message: "Invalid user" }).end();
+      return res.status(400).json({ message: "Invalid user" }).end();
     }
     //reset token
 
@@ -82,7 +82,7 @@ exports.resendVerificationMail = (req, res) => {
     //Now send verification email
 
     sendVerificationMail(user);
-    res.status(204).end();
+    return res.status(204).end();
   });
 };
 
@@ -92,8 +92,8 @@ exports.verifyUserAccount = async (req, res) => {
     user.verification_token = null;
     user.email_verified_at = new Date();
     await user.save();
-    res.status(200).json({ status: "Success" }).end();
+    return res.status(200).json({ status: "Success" }).end();
   } catch (error) {
-    res.status(500).end();
+    return res.status(500).end();
   }
 };
