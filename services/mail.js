@@ -8,7 +8,7 @@ const mg = mailgun({
 exports.sendVerificationMail = async (user) => {
   console.log(user.email);
   const data = {
-    from: `Pneumaimpact <no-reply@$pneumaimpact.ng`,
+    from: `Pneumaimpact <no-reply@pneumaimpact.ng>`,
     subject: "Verify your email",
     to: `${user.email}`,
     text: `Verify your account using the following code.<br/> <b>${user.verification_token}</b>`,
