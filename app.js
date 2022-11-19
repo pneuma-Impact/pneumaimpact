@@ -8,6 +8,7 @@ const express = require("express");
 const app = express();
 const PORT = process.env.PORT || 3000;
 const cors = require("cors");
+const path = require("path");
 
 // App configuration
 app.use(require("helmet")());
@@ -15,6 +16,8 @@ app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 const passport = require("passport");
+
+app.use("/course-uploads", express.static(path.join(__dirname, "uploads")));
 
 // Core Files
 const authStrategy = require("./core/auth");

@@ -1,18 +1,22 @@
+const multer = require("multer");
 const { Course } = require("../models");
+const courseImageUpload = require("../upload-requests/courses/imageUpload");
 
 exports.store = async (req, res) => {
   const course = new Course({
     title: req.body.title,
     body: req.body.body,
+    image: req.filename,
   });
 
   try {
     await course.save();
     return res.status(201).json(course);
   } catch (error) {
-    return res
-      .status(500)
-      .json({ message: "There was an error saving course. Please try again" });
+    // console.log(error);
+    return res.status(500).json({
+      message: "There was an error saving course. Please try again",
+    });
   }
 };
 
