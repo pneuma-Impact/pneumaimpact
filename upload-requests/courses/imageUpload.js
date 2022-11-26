@@ -17,21 +17,22 @@ module.exports = multer({
   //   limits: { fileSize: 400 * 1024 },
   //   dest: "uploads",
   fileFilter: function (req, file, cb) {
-    if (!file) {
-      return cb(new Error("Image required "), false);
-    }
+    // if (!file || !file.fieldname || !file.originalname) {
+    //   cb(new Error("Image required "), false);
+    // }
 
     if (
       !["image/jpeg", "image/jpg", "image/png", "image/gif"].includes(
         file.mimetype
       )
     ) {
-      return cb(new Error("Invalid image"), false);
+      cb("Invalid image", false);
     }
 
     if (file.size > 5000000) {
-      return cb(new Error("Should be less than 5MB"), false);
+      cb("Should be less than 5MB", false);
     }
+
     cb(null, true);
   },
   storage,

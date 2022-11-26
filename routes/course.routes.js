@@ -10,18 +10,6 @@ const coursesValidator = require("../validators/coursesValidator");
 router.post(
   "/",
   passport.authenticate("jwt", { session: false }),
-  // courseImageUpload,
-  function (req, res, next) {
-    courseImageUpload(req, res, function (err) {
-      if (err instanceof multer.MulterError) {
-        return res.status(400).json({ message: err.message });
-      } else if (err) {
-        return res.status(400).json({ message: err.message });
-      }
-      req.filename = req.file.filename;
-      next();
-    });
-  },
   coursesValidator.store,
   coursesController.store
 );

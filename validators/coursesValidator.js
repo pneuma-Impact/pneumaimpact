@@ -1,7 +1,7 @@
 const { body, check, validationResult } = require("express-validator");
 
 exports.store = async (req, res, next) => {
-  await check("title")
+  await check(["title", "filename"])
     .notEmpty()
     .withMessage("Required field")
     .isLength({ max: 255 })

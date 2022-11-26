@@ -6,7 +6,7 @@ exports.store = async (req, res) => {
   const course = new Course({
     title: req.body.title,
     body: req.body.body,
-    image: req.filename,
+    image: req.body.filename,
   });
 
   try {

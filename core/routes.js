@@ -4,11 +4,13 @@ const {
   coursesRoutes,
   profileRoutes,
   auditRoutes,
+  uploadRoutes,
 } = require("../routes");
 module.exports = (app, appVersion) => {
   app.use(`/${appVersion}/api/auth`, authRoutes);
   app.use(`/${appVersion}/api/courses`, coursesRoutes);
   app.use(`/${appVersion}/api/profile`, profileRoutes);
+  app.use(`/${appVersion}/api/uploads`, uploadRoutes);
   app.use(
     `/${appVersion}/api/audits`,
     passport.authenticate("jwt", { session: false }),
