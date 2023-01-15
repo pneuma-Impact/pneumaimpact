@@ -15,6 +15,12 @@ router.post(
 );
 
 router.get(
+  "/",
+  passport.authenticate("jwt", { session: false }),
+  coursesController.getCourses
+);
+
+router.get(
   "/slug/:slug",
   passport.authenticate("jwt", { session: false }),
   userIsVerified,

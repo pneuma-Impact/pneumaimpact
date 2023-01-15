@@ -1,6 +1,7 @@
 const multer = require("multer");
 const { Course } = require("../models");
 const courseImageUpload = require("../upload-requests/courses/imageUpload");
+const logger = require("../utils/logger");
 
 exports.store = async (req, res) => {
   const course = new Course({
@@ -69,4 +70,15 @@ exports.delete = (req, res) => {
     }
     return res.status(404).json({ message: "Course not found" });
   });
+};
+
+exports.getCourses = async (req, res) => {
+  try {
+    const courses = await Course.find({}).sort({ createdAt: "desc" }).exec();
+    logger.info("Fetching courses");
+    return res.json({ courses });
+  } catch (error) {
+    logger.error(error);
+    return res.status(400).json({ message: "Error fetching courses" });
+  }
 };
