@@ -3,21 +3,21 @@ const express = require("express");
 const router = express.Router();
 const passport = require("passport");
 const uploadsController = require("../controllers/uploadsController");
-const courseUpload = require("../upload-requests/courses/courseUpload");
-const imageUpload = require("../upload-requests/courses/imageUpload");
+const singleUpload = require("../upload-requests/courses/singleUpload");
+const multipleUpload = require("../upload-requests/courses/multipleUpload");
 
 router.post(
   "/",
   passport.authenticate("jwt", { session: false }),
-  imageUpload,
-  uploadsController.uploadImage
+  singleUpload,
+  uploadsController.uploadSingle
 );
 
 router.post(
-  "/courses",
+  "/multiple",
   passport.authenticate("jwt", { session: false }),
   // courseUpload.single("course_document"),
-  uploadsController.uploadDocument
+  multipleUpload
 );
 
 module.exports = router;

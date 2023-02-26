@@ -1,6 +1,5 @@
 const multer = require("multer");
 const { Course } = require("../models");
-const courseImageUpload = require("../upload-requests/courses/imageUpload");
 const logger = require("../utils/logger");
 
 exports.store = async (req, res) => {

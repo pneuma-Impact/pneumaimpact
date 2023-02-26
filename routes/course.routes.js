@@ -4,7 +4,6 @@ const passport = require("passport");
 const router = express.Router();
 const coursesController = require("../controllers/coursesController");
 const { userIsVerified, userIsAdmin } = require("../middleware/authMiddleware");
-const courseImageUpload = require("../upload-requests/courses/imageUpload");
 const coursesValidator = require("../validators/coursesValidator");
 
 router.post(

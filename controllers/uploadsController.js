@@ -1,17 +1,20 @@
-const multer = require("multer");
-const courseUpload = require("../upload-requests/courses/courseUpload");
-const imageUpload = require("../upload-requests/courses/imageUpload");
-const logger = require("../utils/logger");
+require("dotenv").config();
 
-exports.uploadImage = (req, res) => {
-  imageUpload(req, res, function (err) {
+const multer = require("multer");
+const singleUpload = require("../upload-requests/courses/singleUpload");
+const logger = require("../utils/logger");
+const multipleUpload = require("../upload-requests/courses/multipleUpload");
+const UPLOADS_URL = process.env.UPLOADS_URL;
+
+exports.uploadSingle = (req, res) => {
+  singleUpload(req, res, function (err) {
     if (err instanceof multer.MulterError) {
       return res.status(400).json({ message: err });
     } else if (err) {
       return res.status(400).json({ message: err });
     } else {
       if (req.file?.filename) {
-        return res.json({ filename: req.file?.filename });
+        return res.json({ filename: UPLOADS_URL + "/" + req.file?.filename });
       } else {
         return res.status(400).json({ message: "Image not uploaded" });
       }
@@ -19,8 +22,8 @@ exports.uploadImage = (req, res) => {
   });
 };
 
-exports.uploadDocument = (req, res) => {
-  courseUpload(req, res, function (err) {
+exports.uploadMultiple = (req, res) => {
+  multipleUpload(req, res, function (err) {
     if (err instanceof multer.MulterError) {
       return res.status(400).json({ error: err });
     } else if (err) {
