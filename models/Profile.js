@@ -1,4 +1,4 @@
-const { Schema, model, ObjectId } = require("../core/db");
+const { Schema, model, ObjectId } = require("mongoose");
 
 const profileSchema = new Schema(
   {

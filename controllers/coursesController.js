@@ -7,13 +7,18 @@ exports.store = async (req, res) => {
     title: req.body.title,
     body: req.body.body,
     image: req.body.filename,
+    description: req.body.description,
+    image: req.body.image,
+    tags: req.body.tags,
+    subtitle: req.body.subtitle,
+    author: req.user._id,
   });
 
   try {
     await course.save();
     return res.status(201).json(course);
   } catch (error) {
-    // console.log(error);
+    console.log(error);
     return res.status(500).json({
       message: "There was an error saving course. Please try again",
     });
@@ -55,6 +60,11 @@ exports.update = async (req, res) => {
     }
     course.title = req.body.title;
     course.body = req.body.body;
+    course.image = req.body.image;
+    course.description = req.body.description;
+    course.image = req.body.image;
+    course.tags = req.body.tags;
+    course.subtitle = req.body.subtitle;
     course.save();
     return res.json({ course });
   } catch (error) {

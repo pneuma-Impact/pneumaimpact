@@ -1,7 +1,6 @@
-const { Schema, model } = require("../core/db");
+const { Schema, model } = require("mongoose");
 const saltRounds = 10;
 const bcrypt = require("bcrypt");
-const Profile = require("./Profile");
 
 const userSchema = new Schema(
   {

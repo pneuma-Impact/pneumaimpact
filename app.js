@@ -11,6 +11,7 @@ const cors = require("cors");
 const path = require("path");
 
 // App configuration
+require("./core/db");
 app.use(require("helmet")());
 app.use(cors());
 app.use(express.json());
